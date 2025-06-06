@@ -1,39 +1,44 @@
 
 const perguntas = [
-  "Você sente inveja de quem ganha dinheiro fácil pela internet?",
-  "Se você ganhasse R$500 por semana só lendo livros, você contaria pra alguém?",
-  "Você quer ganhar dinheiro sem sair de casa, mesmo deitado no sofá?",
-  "Se você tivesse acesso a uma técnica secreta que ninguém mais conhece, usaria?",
-  "Você quer ganhar mais do que seus colegas ou até seu chefe?",
-  "Você ficaria frustrado se outra pessoa aproveitasse isso no seu lugar?",
-  "Se você pudesse ganhar dinheiro com livros sobre qualquer tema que ama, qual escolheria?"
+  "Você sente inveja de quem ganha dinheiro fácil lendo livros?",
+  "Você gostaria de ganhar até R$2.000 por mês lendo histórias?",
+  "Se pudesse trabalhar do seu quarto como Beta Reader, você começaria hoje?",
+  "Você se arrependeria de perder essa oportunidade?",
+  "Você quer dominar um mercado que ainda poucos conhecem?",
+  "Você acha que merece ganhar mais que a média com algo prazeroso?",
+  "Você quer transformar seu tempo livre em renda de verdade?"
 ];
 
 let index = 0;
+let progresso = 0;
 let dinheiro = 0;
 
-const quiz = document.getElementById("quiz");
-const btn = document.getElementById("next");
-const dinheiroSpan = document.getElementById("dinheiro");
-const somVenda = document.getElementById("somVenda");
+const questionText = document.getElementById("question-text");
+const progressBar = document.getElementById("progress-bar");
+const moneySpan = document.getElementById("money");
+const notif = document.getElementById("notif");
+const cashSound = document.getElementById("cashSound");
 
-function mostrarPergunta() {
+function nextQuestion(resposta) {
   if (index < perguntas.length) {
-    quiz.innerHTML = `<h2>${perguntas[index]}</h2>`;
-    btn.innerText = "Responder";
-  } else {
-    window.location.href = "https://pay.kirvano.com/r/481d9c0d-7021-47eb-83a3-02934dd97a51";
+    dinheiro += Math.floor(Math.random() * 150 + 50);
+    moneySpan.textContent = dinheiro;
+    cashSound.play();
+    notif.style.display = "block";
+    setTimeout(() => notif.style.display = "none", 1000);
+
+    index++;
+    progresso += 100 / perguntas.length;
+    progressBar.style.width = progresso + "%";
+
+    if (index < perguntas.length) {
+      questionText.textContent = perguntas[index];
+    } else {
+      window.location.href = "https://pay.kirvano.com/r/481d9c0d-7021-47eb-83a3-02934dd97a51";
+    }
   }
 }
 
-btn.addEventListener("click", () => {
-  if (index < perguntas.length) {
-    dinheiro += Math.floor(Math.random() * 200 + 100);
-    dinheiroSpan.textContent = "R$" + dinheiro;
-    somVenda.play();
-    index++;
-    mostrarPergunta();
-  }
-});
-
-mostrarPergunta();
+window.onload = () => {
+  questionText.textContent = perguntas[index];
+};
